@@ -2,7 +2,7 @@ from textblob import TextBlob
 import requests
 
 def fetch_news(vendor_name):
-    url = "https://newsapi.org/v2/everything"
+    url = 
     
     params = {
         "q": vendor_name,
