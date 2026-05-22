@@ -1,0 +1,4 @@
+Transformers are amazing.
+PyTorch is used for deep learning.
+Tokenization converts text into tokens.
+Large language models use embeddings.

@@ -1,5 +1,50 @@
-import sentencepiece as spm
+from tokenizers import Tokenizer
+from tokenizers.models import BPE
+from tokenizers.trainers import BpeTrainer
+from tokenizers.pre_tokenizers import Whitespace
 
-text = "Spelling and Arithmetic: LLMs struggle with tasks like spelling or simple math because words and numbers are broken into arbitrary chunks. A number might be a single token in one context and split into multiple tokens in another, making it hard for the model to see consistent patterns (7:24 - 8:12, 1:55:57)."
-tokens = text.encode("utf-8")
-print(list(tokens))
+# create tokenizer using BPE algorithm
+tokenizer = Tokenizer(BPE())
+
+# split words by spaces first
+tokenizer.pre_tokenizer = Whitespace()
+
+# settings for training
+trainer = BpeTrainer(
+
+    # maximum vocabulary size
+    vocab_size=100,
+
+    # special tokens used in NLP models
+    special_tokens=[
+        "[PAD]",
+        "[UNK]",
+        "[CLS]",
+        "[SEP]",
+        "[MASK]"
+    ]
+)
+
+# train tokenizer using text file
+tokenizer.train(
+    ["data.txt"],
+    trainer
+)
+
+# save tokenizer to file
+tokenizer.save("my_tokenizer.json")
+
+print("Tokenizer trained!")
+
+# test tokenizer on sample sentence
+output = tokenizer.encode(
+    "Transformers use tokenization"
+)
+
+# print learned tokens
+print("\nTOKENS:")
+print(output.tokens)
+
+# print token IDs
+print("\nTOKEN IDS:")
+print(output.ids)

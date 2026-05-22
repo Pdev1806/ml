@@ -1,0 +1,444 @@
+{
+  "version": "1.0",
+  "truncation": null,
+  "padding": null,
+  "added_tokens": [
+    {
+      "id": 0,
+      "content": "[PAD]",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    },
+    {
+      "id": 1,
+      "content": "[UNK]",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    },
+    {
+      "id": 2,
+      "content": "[CLS]",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    },
+    {
+      "id": 3,
+      "content": "[SEP]",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    },
+    {
+      "id": 4,
+      "content": "[MASK]",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    }
+  ],
+  "normalizer": null,
+  "pre_tokenizer": {
+    "type": "Whitespace"
+  },
+  "post_processor": null,
+  "decoder": null,
+  "model": {
+    "type": "BPE",
+    "dropout": null,
+    "unk_token": null,
+    "continuing_subword_prefix": null,
+    "end_of_word_suffix": null,
+    "fuse_unk": false,
+    "byte_fallback": false,
+    "ignore_merges": false,
+    "vocab": {
+      "[PAD]": 0,
+      "[UNK]": 1,
+      "[CLS]": 2,
+      "[SEP]": 3,
+      "[MASK]": 4,
+      ".": 5,
+      "L": 6,
+      "P": 7,
+      "T": 8,
+      "a": 9,
+      "b": 10,
+      "c": 11,
+      "d": 12,
+      "e": 13,
+      "f": 14,
+      "g": 15,
+      "h": 16,
+      "i": 17,
+      "k": 18,
+      "l": 19,
+      "m": 20,
+      "n": 21,
+      "o": 22,
+      "p": 23,
+      "r": 24,
+      "s": 25,
+      "t": 26,
+      "u": 27,
+      "v": 28,
+      "x": 29,
+      "y": 30,
+      "z": 31,
+      "in": 32,
+      "ar": 33,
+      "or": 34,
+      "ing": 35,
+      "an": 36,
+      "de": 37,
+      "ed": 38,
+      "en": 39,
+      "er": 40,
+      "for": 41,
+      "ge": 42,
+      "ken": 43,
+      "on": 44,
+      "oken": 45,
+      "us": 46,
+      "Lar": 47,
+      "Py": 48,
+      "Tr": 49,
+      "Tor": 50,
+      "Token": 51,
+      "am": 52,
+      "at": 53,
+      "az": 54,
+      "age": 55,
+      "bed": 56,
+      "ch": 57,
+      "con": 58,
+      "ding": 59,
+      "em": 60,
+      "ep": 61,
+      "ex": 62,
+      "ear": 63,
+      "gu": 64,
+      "is": 65,
+      "iz": 66,
+      "ion": 67,
+      "ls": 68,
+      "lan": 69,
+      "lear": 70,
+      "mo": 71,
+      "mer": 72,
+      "ning": 73,
+      "sfor": 74,
+      "to": 75,
+      "ts": 76,
+      "token": 77,
+      "tex": 78,
+      "ver": 79,
+      "into": 80,
+      "are": 81,
+      "ansfor": 82,
+      "deep": 83,
+      "dels": 84,
+      "use": 85,
+      "used": 86,
+      "Large": 87,
+      "PyTor": 88,
+      "Transfor": 89,
+      "Tokeniz": 90,
+      "amaz": 91,
+      "ation": 92,
+      "bedding": 93,
+      "conver": 94,
+      "embedding": 95,
+      "guage": 96,
+      "language": 97,
+      "learning": 98,
+      "models": 99
+    },
+    "merges": [
+      [
+        "i",
+        "n"
+      ],
+      [
+        "a",
+        "r"
+      ],
+      [
+        "o",
+        "r"
+      ],
+      [
+        "in",
+        "g"
+      ],
+      [
+        "a",
+        "n"
+      ],
+      [
+        "d",
+        "e"
+      ],
+      [
+        "e",
+        "d"
+      ],
+      [
+        "e",
+        "n"
+      ],
+      [
+        "e",
+        "r"
+      ],
+      [
+        "f",
+        "or"
+      ],
+      [
+        "g",
+        "e"
+      ],
+      [
+        "k",
+        "en"
+      ],
+      [
+        "o",
+        "n"
+      ],
+      [
+        "o",
+        "ken"
+      ],
+      [
+        "u",
+        "s"
+      ],
+      [
+        "L",
+        "ar"
+      ],
+      [
+        "P",
+        "y"
+      ],
+      [
+        "T",
+        "r"
+      ],
+      [
+        "T",
+        "or"
+      ],
+      [
+        "T",
+        "oken"
+      ],
+      [
+        "a",
+        "m"
+      ],
+      [
+        "a",
+        "t"
+      ],
+      [
+        "a",
+        "z"
+      ],
+      [
+        "a",
+        "ge"
+      ],
+      [
+        "b",
+        "ed"
+      ],
+      [
+        "c",
+        "h"
+      ],
+      [
+        "c",
+        "on"
+      ],
+      [
+        "d",
+        "ing"
+      ],
+      [
+        "e",
+        "m"
+      ],
+      [
+        "e",
+        "p"
+      ],
+      [
+        "e",
+        "x"
+      ],
+      [
+        "e",
+        "ar"
+      ],
+      [
+        "g",
+        "u"
+      ],
+      [
+        "i",
+        "s"
+      ],
+      [
+        "i",
+        "z"
+      ],
+      [
+        "i",
+        "on"
+      ],
+      [
+        "l",
+        "s"
+      ],
+      [
+        "l",
+        "an"
+      ],
+      [
+        "l",
+        "ear"
+      ],
+      [
+        "m",
+        "o"
+      ],
+      [
+        "m",
+        "er"
+      ],
+      [
+        "n",
+        "ing"
+      ],
+      [
+        "s",
+        "for"
+      ],
+      [
+        "t",
+        "o"
+      ],
+      [
+        "t",
+        "s"
+      ],
+      [
+        "t",
+        "oken"
+      ],
+      [
+        "t",
+        "ex"
+      ],
+      [
+        "v",
+        "er"
+      ],
+      [
+        "in",
+        "to"
+      ],
+      [
+        "ar",
+        "e"
+      ],
+      [
+        "an",
+        "sfor"
+      ],
+      [
+        "de",
+        "ep"
+      ],
+      [
+        "de",
+        "ls"
+      ],
+      [
+        "us",
+        "e"
+      ],
+      [
+        "us",
+        "ed"
+      ],
+      [
+        "Lar",
+        "ge"
+      ],
+      [
+        "Py",
+        "Tor"
+      ],
+      [
+        "Tr",
+        "ansfor"
+      ],
+      [
+        "Token",
+        "iz"
+      ],
+      [
+        "am",
+        "az"
+      ],
+      [
+        "at",
+        "ion"
+      ],
+      [
+        "bed",
+        "ding"
+      ],
+      [
+        "con",
+        "ver"
+      ],
+      [
+        "em",
+        "bedding"
+      ],
+      [
+        "gu",
+        "age"
+      ],
+      [
+        "lan",
+        "guage"
+      ],
+      [
+        "lear",
+        "ning"
+      ],
+      [
+        "mo",
+        "dels"
+      ]
+    ]
+  }
+}
