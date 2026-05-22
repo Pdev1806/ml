@@ -1,157 +1,190 @@
 import torch
 import torch.nn as nn
+import torchvision
+import torchvision.transforms as transforms
 
 # ==========================================
-# 1. CREATE DATASET
+# 1. DEVICE CONFIGURATION
 # ==========================================
 
-# y = 2x
+# use GPU if available else CPU
 
-X = torch.tensor(
-    [[1], [2], [3], [4], [5]],
-    dtype=torch.float32
+device = torch.device(
+    'cuda' if torch.cuda.is_available() else 'cpu'
 )
 
-Y = torch.tensor(
-    [[2], [4], [6], [8], [10]],
-    dtype=torch.float32
+print(device)
+
+# ==========================================
+# 2. HYPERPARAMETERS
+# ==========================================
+
+input_size = 784      # 28x28 image = 784 pixels
+hidden_size = 500
+num_classes = 10      # digits 0-9
+
+num_epochs = 5
+batch_size = 100
+learning_rate = 0.001
+
+# ==========================================
+# 3. LOAD DATASET
+# ==========================================
+
+train_dataset = torchvision.datasets.MNIST(
+    root='./data',
+    train=True,
+    transform=transforms.ToTensor(),
+    download=True
 )
 
-# shape = (samples, features)
-n_samples, n_features = X.shape
-
-print("samples:", n_samples)
-print("features:", n_features)
+test_dataset = torchvision.datasets.MNIST(
+    root='./data',
+    train=False,
+    transform=transforms.ToTensor()
+)
 
 # ==========================================
-# 2. CREATE MODEL CLASS
+# 4. DATALOADERS
 # ==========================================
 
-# Every PyTorch model usually inherits nn.Module
+train_loader = torch.utils.data.DataLoader(
+    dataset=train_dataset,
+    batch_size=batch_size,
+    shuffle=True
+)
 
-class LinearRegressionModel(nn.Module):
+test_loader = torch.utils.data.DataLoader(
+    dataset=test_dataset,
+    batch_size=batch_size,
+    shuffle=False
+)
 
-    # constructor
-    def __init__(self, input_dim, output_dim):
+# ==========================================
+# 5. CREATE NEURAL NETWORK
+# ==========================================
 
-        # initialize parent class
-        super(LinearRegressionModel, self).__init__()
+class NeuralNet(nn.Module):
 
-        # create linear layer
-        # internally does:
-        # y = wx + b
+    def __init__(self, input_size, hidden_size, num_classes):
 
-        self.linear = nn.Linear(
-            input_dim,
-            output_dim
+        super(NeuralNet, self).__init__()
+
+        # hidden layer
+        self.linear1 = nn.Linear(
+            input_size,
+            hidden_size
         )
 
-    # forward pass
+        # activation
+        self.relu = nn.ReLU()
+
+        # output layer
+        self.linear2 = nn.Linear(
+            hidden_size,
+            num_classes
+        )
+
     def forward(self, x):
 
-        return self.linear(x)
+        # flatten image
+        x = x.reshape(-1, 28 * 28)
+
+        out = self.linear1(x)
+
+        out = self.relu(out)
+
+        out = self.linear2(out)
+
+        return out
 
 # ==========================================
-# 3. CREATE MODEL OBJECT
+# 6. INITIALIZE MODEL
 # ==========================================
 
-model = LinearRegressionModel(
-    input_dim=n_features,
-    output_dim=1
-)
+model = NeuralNet(
+    input_size,
+    hidden_size,
+    num_classes
+).to(device)
 
 # ==========================================
-# 4. LOSS FUNCTION
+# 7. LOSS + OPTIMIZER
 # ==========================================
 
-# Mean Squared Error
-loss_fn = nn.MSELoss()
+criterion = nn.CrossEntropyLoss()
 
-# ==========================================
-# 5. OPTIMIZER
-# ==========================================
-
-optimizer = torch.optim.SGD(
+optimizer = torch.optim.Adam(
     model.parameters(),
-    lr=0.01
+    lr=learning_rate
 )
 
 # ==========================================
-# 6. BEFORE TRAINING
+# 8. TRAINING LOOP
 # ==========================================
 
-x_test = torch.tensor([[5]], dtype=torch.float32)
+total_steps = len(train_loader)
 
-prediction = model(x_test)
+for epoch in range(num_epochs):
 
-print("\nBefore training:")
-print(prediction)
+    for i, (images, labels) in enumerate(train_loader):
 
-# ==========================================
-# 7. TRAINING LOOP
-# ==========================================
+        # move tensors to device
+        images = images.to(device)
+        labels = labels.to(device)
 
-epochs = 1000
+        # -------------------------
+        # FORWARD PASS
+        # -------------------------
 
-for epoch in range(epochs):
+        outputs = model(images)
 
-    # ------------------------------
-    # FORWARD PASS
-    # ------------------------------
+        loss = criterion(outputs, labels)
 
-    y_predicted = model(X)
+        # -------------------------
+        # BACKWARD PASS
+        # -------------------------
 
-    # ------------------------------
-    # LOSS
-    # ------------------------------
+        optimizer.zero_grad()
 
-    loss = loss_fn(Y, y_predicted)
+        loss.backward()
 
-    # ------------------------------
-    # BACKWARD PASS
-    # ------------------------------
+        optimizer.step()
 
-    optimizer.zero_grad()
+        # -------------------------
+        # PRINT
+        # -------------------------
 
-    loss.backward()
+        if (i + 1) % 100 == 0:
 
-    # ------------------------------
-    # UPDATE WEIGHTS
-    # ------------------------------
-
-    optimizer.step()
-
-    # ------------------------------
-    # PRINT PROGRESS
-    # ------------------------------
-
-    if (epoch + 1) % 100 == 0:
-
-        # get weight and bias
-        [w, b] = model.parameters()
-
-        print(
-            f'epoch {epoch+1}: '
-            f'weight = {w[0][0].item():.3f}, '
-            f'bias = {b.item():.3f}, '
-            f'loss = {loss.item():.8f}'
-        )
+            print(
+                f'Epoch [{epoch+1}/{num_epochs}], '
+                f'Step [{i+1}/{total_steps}], '
+                f'Loss: {loss.item():.4f}'
+            )
 
 # ==========================================
-# 8. AFTER TRAINING
+# 9. TEST MODEL
 # ==========================================
 
-print("\nAfter training:")
+with torch.no_grad():
 
-prediction = model(x_test)
+    correct = 0
+    total = 0
 
-print(prediction)
+    for images, labels in test_loader:
 
-# ==========================================
-# 9. INSPECT PARAMETERS
-# ==========================================
+        images = images.to(device)
+        labels = labels.to(device)
 
-print("\nModel parameters:")
+        outputs = model(images)
 
-for param in model.parameters():
-    print(param)
+        _, predicted = torch.max(outputs, 1)
+
+        total += labels.size(0)
+
+        correct += (predicted == labels).sum().item()
+
+    print(
+        f'Accuracy: {100 * correct / total:.2f}%'
+    )
